@@ -913,8 +913,7 @@ static inline bool tcp_in_initial_slowstart(const struct tcp_sock *tp)
 
 static inline bool tcp_in_cwnd_reduction(const struct sock *sk)
 {
-	return (TCPF_CA_CWR | TCPF_CA_Recovery) &
-	       (1 << inet_csk(sk)->icsk_ca_state);
+	return (TCPF_CA_CWR | TCPF_CA_Recovery) & (1 << inet_csk(sk)->icsk_ca_state);
 }
 
 /* If cwnd > ssthresh, we may raise ssthresh to be half-way to cwnd.

@@ -2331,8 +2331,7 @@ static inline bool tcp_can_repair_sock(const struct sock *sk)
 		((1 << sk->sk_state) & (TCPF_CLOSE | TCPF_ESTABLISHED));
 }
 
-static int tcp_repair_options_est(struct tcp_sock *tp,
-		struct tcp_repair_opt __user *optbuf, unsigned int len)
+static int tcp_repair_options_est(struct tcp_sock *tp, struct tcp_repair_opt __user *optbuf, unsigned int len)
 {
 	struct tcp_repair_opt opt;
 

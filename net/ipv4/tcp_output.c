@@ -837,8 +837,7 @@ void tcp_wfree(struct sk_buff *skb)
  * We are working here with either a clone of the original
  * SKB, or a fresh unique copy made by the retransmit engine.
  */
-static int tcp_transmit_skb(struct sock *sk, struct sk_buff *skb, int clone_it,
-			    gfp_t gfp_mask)
+static int tcp_transmit_skb(struct sock *sk, struct sk_buff *skb, int clone_it, gfp_t gfp_mask)
 {
 	const struct inet_connection_sock *icsk = inet_csk(sk);
 	struct inet_sock *inet;
@@ -2406,7 +2405,8 @@ int tcp_retransmit_skb(struct sock *sk, struct sk_buff *skb)
 	struct tcp_sock *tp = tcp_sk(sk);
 	int err = __tcp_retransmit_skb(sk, skb);
 
-	if (err == 0) {
+	if (err == 0) 
+	{
 		/* Update global TCP statistics. */
 		TCP_INC_STATS(sock_net(sk), TCP_MIB_RETRANSSEGS);
 
@@ -2492,17 +2492,21 @@ void tcp_xmit_retransmit_queue(struct sock *sk)
 	if (!tp->lost_out)
 		tp->retransmit_high = tp->snd_una;
 
-	if (tp->retransmit_skb_hint) {
+	if (tp->retransmit_skb_hint) 
+	{
 		skb = tp->retransmit_skb_hint;
 		last_lost = TCP_SKB_CB(skb)->end_seq;
 		if (after(last_lost, tp->retransmit_high))
 			last_lost = tp->retransmit_high;
-	} else {
+	} 
+	else 
+	{
 		skb = tcp_write_queue_head(sk);
 		last_lost = tp->snd_una;
 	}
 
-	tcp_for_write_queue_from(skb, sk) {
+	tcp_for_write_queue_from(skb, sk)
+	{
 		__u8 sacked = TCP_SKB_CB(skb)->sacked;
 
 		if (skb == tcp_send_head(sk))
@@ -2521,30 +2525,37 @@ void tcp_xmit_retransmit_queue(struct sock *sk)
 		if (tcp_packets_in_flight(tp) >= tp->snd_cwnd)
 			return;
 
-		if (fwd_rexmitting) {
+		if (fwd_rexmitting)
+		{
 begin_fwd:
 			if (!before(TCP_SKB_CB(skb)->seq, tcp_highest_sack_seq(tp)))
 				break;
 			mib_idx = LINUX_MIB_TCPFORWARDRETRANS;
 
-		} else if (!before(TCP_SKB_CB(skb)->seq, tp->retransmit_high)) {
+		}
+		else if (!before(TCP_SKB_CB(skb)->seq, tp->retransmit_high)) 
+		{
 			tp->retransmit_high = last_lost;
 			if (!tcp_can_forward_retransmit(sk))
 				break;
 			/* Backtrack if necessary to non-L'ed skb */
-			if (hole != NULL) {
+			if (hole != NULL)
+			{
 				skb = hole;
 				hole = NULL;
 			}
 			fwd_rexmitting = 1;
 			goto begin_fwd;
 
-		} else if (!(sacked & TCPCB_LOST)) {
+		}
+		else if (!(sacked & TCPCB_LOST))
+		{
 			if (hole == NULL && !(sacked & (TCPCB_SACKED_RETRANS|TCPCB_SACKED_ACKED)))
 				hole = skb;
 			continue;
-
-		} else {
+		} 
+		else
+		{
 			last_lost = TCP_SKB_CB(skb)->end_seq;
 			if (icsk->icsk_ca_state != TCP_CA_Loss)
 				mib_idx = LINUX_MIB_TCPFASTRETRANS;
@@ -2555,7 +2566,8 @@ begin_fwd:
 		if (sacked & (TCPCB_SACKED_ACKED|TCPCB_SACKED_RETRANS))
 			continue;
 
-		if (tcp_retransmit_skb(sk, skb)) {
+		if (tcp_retransmit_skb(sk, skb)) 
+		{
 			NET_INC_STATS_BH(sock_net(sk), LINUX_MIB_TCPRETRANSFAIL);
 			return;
 		}
@@ -2565,9 +2577,7 @@ begin_fwd:
 			tp->prr_out += tcp_skb_pcount(skb);
 
 		if (skb == tcp_write_queue_head(sk))
-			inet_csk_reset_xmit_timer(sk, ICSK_TIME_RETRANS,
-						  inet_csk(sk)->icsk_rto,
-						  TCP_RTO_MAX);
+			inet_csk_reset_xmit_timer(sk, ICSK_TIME_RETRANS, inet_csk(sk)->icsk_rto, TCP_RTO_MAX);
 	}
 }
 

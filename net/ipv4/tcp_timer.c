@@ -358,8 +358,8 @@ void tcp_retransmit_timer(struct sock *sk)
 
 	tp->tlp_high_seq = 0;
 
-	if (!tp->snd_wnd && !sock_flag(sk, SOCK_DEAD) &&
-	    !((1 << sk->sk_state) & (TCPF_SYN_SENT | TCPF_SYN_RECV))) {
+	if (!tp->snd_wnd && !sock_flag(sk, SOCK_DEAD) && !((1 << sk->sk_state) & (TCPF_SYN_SENT | TCPF_SYN_RECV)))
+	{
 		/* Receiver dastardly shrinks window. Our retransmits
 		 * become zero probes, but we should not timeout this
 		 * connection. If the socket is an orphan, time it out,
@@ -381,7 +381,8 @@ void tcp_retransmit_timer(struct sock *sk)
 				       tp->snd_una, tp->snd_nxt);
 		}
 #endif
-		if (tcp_time_stamp - tp->rcv_tstamp > TCP_RTO_MAX) {
+		if (tcp_time_stamp - tp->rcv_tstamp > TCP_RTO_MAX) 
+		{
 			tcp_write_err(sk);
 			goto out;
 		}
@@ -394,7 +395,8 @@ void tcp_retransmit_timer(struct sock *sk)
 	if (tcp_write_timeout(sk))
 		goto out;
 
-	if (icsk->icsk_retransmits == 0) {
+	if (icsk->icsk_retransmits == 0) 
+	{
 		int mib_idx;
 
 		if (icsk->icsk_ca_state == TCP_CA_Recovery) {
@@ -418,15 +420,14 @@ void tcp_retransmit_timer(struct sock *sk)
 
 	tcp_enter_loss(sk, 0);
 
-	if (tcp_retransmit_skb(sk, tcp_write_queue_head(sk)) > 0) {
+	if (tcp_retransmit_skb(sk, tcp_write_queue_head(sk)) > 0) 
+	{
 		/* Retransmission failed because of local congestion,
 		 * do not backoff.
 		 */
 		if (!icsk->icsk_retransmits)
 			icsk->icsk_retransmits = 1;
-		inet_csk_reset_xmit_timer(sk, ICSK_TIME_RETRANS,
-					  min(icsk->icsk_rto, TCP_RESOURCE_PROBE_INTERVAL),
-					  TCP_RTO_MAX);
+		inet_csk_reset_xmit_timer(sk, ICSK_TIME_RETRANS, min(icsk->icsk_rto, TCP_RESOURCE_PROBE_INTERVAL), TCP_RTO_MAX);
 		goto out;
 	}
 
@@ -464,7 +465,9 @@ out_reset_timer:
 	    icsk->icsk_retransmits <= TCP_THIN_LINEAR_RETRIES) {
 		icsk->icsk_backoff = 0;
 		icsk->icsk_rto = min(__tcp_set_rto(tp), TCP_RTO_MAX);
-	} else {
+	} 
+	else
+	{
 		/* Use normal (exponential) backoff */
 		icsk->icsk_rto = min(icsk->icsk_rto << 1, TCP_RTO_MAX);
 	}
