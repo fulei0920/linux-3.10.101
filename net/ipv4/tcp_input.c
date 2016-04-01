@@ -1179,15 +1179,16 @@ static u8 tcp_sacktag_one(struct sock *sk,
 				tp->lost_out -= pcount;
 				tp->retrans_out -= pcount;
 			}
-		} else {
-			if (!(sacked & TCPCB_RETRANS)) {
+		} 
+		else 
+		{
+			if (!(sacked & TCPCB_RETRANS))
+			{
 				/* New sack for not retransmitted frame,
 				 * which was in hole. It is reordering.
 				 */
-				if (before(start_seq,
-					   tcp_highest_sack_seq(tp)))
-					state->reord = min(fack_count,
-							   state->reord);
+				if (before(start_seq, tcp_highest_sack_seq(tp)))
+					state->reord = min(fack_count, state->reord);
 				if (!after(end_seq, tp->high_seq))
 					state->flag |= FLAG_ORIG_SACK_ACKED;
 			}
@@ -2907,7 +2908,8 @@ static void tcp_fastretrans_alert(struct sock *sk, int pkts_acked, int prior_sac
 		/* MTU probe failure: don't reduce cwnd */
 		if (icsk->icsk_ca_state < TCP_CA_CWR &&
 		    icsk->icsk_mtup.probe_size &&
-		    tp->snd_una == tp->mtu_probe.probe_seq_start) {
+		    tp->snd_una == tp->mtu_probe.probe_seq_start)
+		{
 			tcp_mtup_probe_failed(sk);
 			/* Restores the reduction we did in tcp_mtup_probe() */
 			tp->snd_cwnd++;

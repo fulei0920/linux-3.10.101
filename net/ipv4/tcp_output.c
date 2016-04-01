@@ -2413,7 +2413,8 @@ int tcp_retransmit_skb(struct sock *sk, struct sk_buff *skb)
 		tp->total_retrans++;
 
 #if FASTRETRANS_DEBUG > 0
-		if (TCP_SKB_CB(skb)->sacked & TCPCB_SACKED_RETRANS) {
+		if (TCP_SKB_CB(skb)->sacked & TCPCB_SACKED_RETRANS) 
+		{
 			net_dbg_ratelimited("retrans_out leaked\n");
 		}
 #endif
