@@ -2273,7 +2273,6 @@ static void tcp_mark_head_lost(struct sock *sk, int packets, int mark_head)
 }
 
 /* Account newly detected lost packet(s) */
-
 static void tcp_update_scoreboard(struct sock *sk, int fast_rexmit)
 {
 	struct tcp_sock *tp = tcp_sk(sk);
